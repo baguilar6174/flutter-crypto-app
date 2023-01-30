@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:crypto_app/features/features.dart';
-import 'package:crypto_app/features/general/presentation/bloc/bloc.dart';
 
 class PricesBloc extends ChangeNotifier {
   PricesBloc({required this.repository});

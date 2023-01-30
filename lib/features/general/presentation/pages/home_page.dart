@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:crypto_app/core/core.dart';
 import 'package:crypto_app/features/features.dart';
 
 class HomeView extends StatelessWidget {

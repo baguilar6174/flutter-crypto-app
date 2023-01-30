@@ -6,7 +6,7 @@ import 'package:crypto_app/features/features.dart';
 import 'package:crypto_app/utils/utils.dart';
 
 abstract class ExchangeRemoteDataSource {
-  // TODO: create type for Future<Either<HttpRequestFailure, List<Crypto>>>
+  // !: is posible to create type for Future<Either<HttpRequestFailure, List<Crypto>>>
   Future<Either<HttpRequestFailure, List<Crypto>>> getPrices(List<String> ids);
 }
 
