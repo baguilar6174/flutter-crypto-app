@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:crypto_app/core/core.dart';
 import 'package:crypto_app/features/features.dart';
-import 'package:crypto_app/features/general/presentation/bloc/bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -15,28 +15,35 @@ class HomeView extends StatelessWidget {
       builder: (context, _) {
         final PricesBloc bloc = context.watch<PricesBloc>();
         return Scaffold(
-          body: () {
-            final state = bloc.state;
-            if (state is LoadingPricesState) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is LoadedPricesState) {
-              return ListView.builder(
-                  itemCount: state.prices.length,
-                  itemBuilder: (_, index) {
-                    final crypto = state.prices[index];
-                    return ListTile(
-                      title: Text(crypto.id),
-                      subtitle: Text(crypto.symbol),
-                      trailing: Text(crypto.price.toStringAsFixed(2)),
-                    );
-                  });
-            }
-            return const Center(
-              child: Text('error'),
+            body: bloc.state.when<Widget>(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (failure) {
+            final String message = failure.when(
+              network: () => 'Check your internet connection',
+              notFound: () => 'Resource not found',
+              server: () => 'Server error',
+              unauthorized: () => 'Unauthorized',
+              badRequest: () => 'Bad Request',
+              local: () => 'Unknown error',
             );
-          }(),
-        );
+            return Center(
+              child: Text(message),
+            );
+          },
+          loaded: (prices) => ListView.builder(
+            itemCount: prices.length,
+            itemBuilder: (_, index) {
+              final crypto = prices[index];
+              return ListTile(
+                title: Text(crypto.id),
+                subtitle: Text(crypto.symbol),
+                trailing: Text(crypto.price.toStringAsFixed(2)),
+              );
+            },
+          ),
+        ));
       },
     );
   }

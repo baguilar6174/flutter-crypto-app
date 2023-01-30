@@ -1,14 +1,13 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'package:crypto_app/core/core.dart';
 import 'package:crypto_app/features/features.dart';
 
-abstract class PricesState {}
+part 'prices_state.freezed.dart';
 
-class PricesInitial extends PricesState {}
-
-class LoadingPricesState extends PricesState {}
-
-class LoadedPricesState extends PricesState {
-  final List<Crypto> prices;
-  LoadedPricesState({required this.prices});
+@freezed
+class PricesState with _$PricesState {
+  factory PricesState.loading() = LoadingPricesState;
+  factory PricesState.error(HttpRequestFailure failure) = ErrorPricesState;
+  factory PricesState.loaded(List<Crypto> prices) = LoadedPricesState;
 }
-
-class ErrorPricesState extends PricesState {}

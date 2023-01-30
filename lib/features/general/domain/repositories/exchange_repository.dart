@@ -1,5 +1,6 @@
-import '../usecases/usecases.dart';
+import 'package:crypto_app/core/core.dart';
+import 'package:crypto_app/features/features.dart';
 
 abstract class ExchangeRepository {
-  Future<GetPricesResult> getPrices(List<String> ids);
+  Future<Either<HttpRequestFailure, List<Crypto>>> getPrices(List<String> ids);
 }

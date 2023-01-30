@@ -8,7 +8,10 @@ class PricesBloc extends ChangeNotifier {
 
   final ExchangeRepository repository;
 
-  PricesState _state = LoadingPricesState();
+  // ! Both ways are correct
+  // PricesState _state = LoadingPricesState();
+  PricesState _state = PricesState.loading();
+
   PricesState get state => _state;
 
   Future<void> init() async {
@@ -24,11 +27,12 @@ class PricesBloc extends ChangeNotifier {
       "usd-coin",
       "dogecoin",
     ]);
-    if (result is GetPricesSuccess) {
-      _state = LoadedPricesState(prices: result.cryptos);
-    } else {
-      _state = ErrorPricesState();
-    }
+
+    _state = result.when(
+      left: (failure) => ErrorPricesState(failure),
+      right: (prices) => LoadedPricesState(prices),
+    );
+
     notifyListeners();
   }
 }
