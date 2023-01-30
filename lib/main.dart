@@ -1,11 +1,20 @@
+import 'package:crypto_app/features/features.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'features/general/presentation/presentation.dart';
+import 'features/common/data/data.dart';
 
 void main() {
-  runApp(
-    const MyApp(),
-  );
+  runApp(MultiProvider(
+    providers: [
+      Provider<ExchangeRepository>(
+        create: (_) => ExchangeRepositoryImpl(
+          remoteDataSource: ExchangeRemoteDataSourceImpl(DioClient()),
+        ),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
