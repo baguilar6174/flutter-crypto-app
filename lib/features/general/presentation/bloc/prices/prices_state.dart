@@ -7,7 +7,18 @@ part 'prices_state.freezed.dart';
 
 @freezed
 class PricesState with _$PricesState {
-  factory PricesState.loading() = LoadingPricesState;
-  factory PricesState.error(HttpRequestFailure failure) = ErrorPricesState;
-  factory PricesState.loaded(List<Crypto> prices) = LoadedPricesState;
+  const factory PricesState.loading() = LoadingPricesState;
+  const factory PricesState.error(HttpRequestFailure failure) =
+      ErrorPricesState;
+  const factory PricesState.loaded({
+    required List<Crypto> prices,
+    @Default(WsStatus.connecting()) WsStatus wsStatus,
+  }) = LoadedPricesState;
+}
+
+@freezed
+class WsStatus with _$WsStatus {
+  const factory WsStatus.connecting() = ConnectingWsStatus;
+  const factory WsStatus.connected() = ConnectedWsStatus;
+  const factory WsStatus.error() = ErrorWsStatus;
 }

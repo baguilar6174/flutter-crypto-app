@@ -8,6 +8,13 @@ Generate Freezed files
 flutter pub run build_runner build
 ```
 
+## Features
+
+- Using Sockets
+- Clean Architecture
+- Functional programming with Freezed
+- Dio Http client, interceptor and logger
+
 ## Stay in touch
 
 - Website - [www.bryan-aguilar.com](https://www.bryan-aguilar.com/)

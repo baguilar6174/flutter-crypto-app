@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:crypto_app/core/core.dart';
-import 'package:crypto_app/features/common/data/data.dart';
 import 'package:crypto_app/features/features.dart';
 import 'package:crypto_app/utils/utils.dart';
 

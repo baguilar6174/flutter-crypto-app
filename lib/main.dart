@@ -1,8 +1,8 @@
-import 'package:crypto_app/features/features.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'features/common/data/data.dart';
+import 'package:crypto_app/features/features.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -11,7 +11,14 @@ void main() {
         create: (_) => ExchangeRepositoryImpl(
           remoteDataSource: ExchangeRemoteDataSourceImpl(DioClient()),
         ),
-      )
+      ),
+      Provider<WsRepository>(
+        create: (_) => WsRepositoryImpl(
+          (ids) => WebSocketChannel.connect(Uri.parse(
+            "wss://ws.coincap.io/prices?assets=${ids.join(',')}",
+          )),
+        ),
+      ),
     ],
     child: const MyApp(),
   ));
