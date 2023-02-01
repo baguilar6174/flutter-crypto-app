@@ -14,6 +14,7 @@ flutter pub run build_runner build
 - Clean Architecture
 - Functional programming with Freezed
 - Dio Http client, interceptor and logger
+- Using Intl
 
 ## Stay in touch
 

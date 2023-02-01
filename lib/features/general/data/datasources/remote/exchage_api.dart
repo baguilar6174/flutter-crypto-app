@@ -27,8 +27,10 @@ class ExchangeRemoteDataSourceImpl implements ExchangeRemoteDataSource {
         final cryptos = (response.data["data"] as List).map(
           (e) => Crypto(
             id: e["id"],
+            name: e["name"],
             symbol: e["symbol"],
             price: double.parse(e["priceUsd"]),
+            changePercent24Hr: double.parse(e["changePercent24Hr"]),
           ),
         );
         return Either.right(cryptos.toList());

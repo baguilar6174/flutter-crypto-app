@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:crypto_app/features/features.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Intl.defaultLocale = 'es_US';
+
   runApp(MultiProvider(
     providers: [
       Provider<ExchangeRepository>(
