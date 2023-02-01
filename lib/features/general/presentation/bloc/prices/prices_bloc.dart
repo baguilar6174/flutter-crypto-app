@@ -12,7 +12,9 @@ class PricesBloc extends ChangeNotifier {
 
   final ExchangeRepository exchangeRepository;
   final WsRepository wsRepository;
+
   StreamSubscription? _subscription;
+  StreamSubscription? _wsSubscription;
 
   // ! Both ways are correct
   // PricesState _state = const LoadingPricesState();
@@ -68,6 +70,8 @@ class PricesBloc extends ChangeNotifier {
 
   void _onPricesChanged() {
     _subscription?.cancel();
+    _wsSubscription?.cancel();
+
     _subscription = wsRepository.onPricesChanged.listen((changes) {
       state.mapOrNull(
         loaded: (state) {
@@ -88,11 +92,20 @@ class PricesBloc extends ChangeNotifier {
         },
       );
     });
+    _wsSubscription = wsRepository.onStatusChanged.listen((status) {
+      state.mapOrNull(
+        loaded: (state) {
+          _state = state.copyWith(wsStatus: status);
+        },
+      );
+      notifyListeners();
+    });
   }
 
   @override
   void dispose() {
     _subscription?.cancel();
+    _wsSubscription?.cancel();
     super.dispose();
   }
 }

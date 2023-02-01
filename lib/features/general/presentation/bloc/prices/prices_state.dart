@@ -15,10 +15,3 @@ class PricesState with _$PricesState {
     @Default(WsStatus.connecting()) WsStatus wsStatus,
   }) = LoadedPricesState;
 }
-
-@freezed
-class WsStatus with _$WsStatus {
-  const factory WsStatus.connecting() = ConnectingWsStatus;
-  const factory WsStatus.connected() = ConnectedWsStatus;
-  const factory WsStatus.error() = ErrorWsStatus;
-}
