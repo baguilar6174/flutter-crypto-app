@@ -18,46 +18,13 @@ class HomeView extends StatelessWidget {
       builder: (context, _) {
         final PricesBloc bloc = context.watch<PricesBloc>();
         return Scaffold(
-            appBar: AppBar(
-              title: bloc.state.whenOrNull(loaded: (_, wsStatus) {
-                return Text(
-                  wsStatus.when(
-                    connecting: () => 'connecting',
-                    connected: () => 'connected',
-                    error: () => 'error',
-                  ),
-                );
-              }),
-            ),
-            body: bloc.state.when<Widget>(
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              error: (failure) {
-                final String message = failure.when(
-                  network: () => 'Check your internet connection',
-                  notFound: () => 'Resource not found',
-                  server: () => 'Server error',
-                  unauthorized: () => 'Unauthorized',
-                  badRequest: () => 'Bad Request',
-                  local: () => 'Unknown error',
-                );
-                return Center(
-                  child: Text(message),
-                );
-              },
-              loaded: (prices, _) => ListView.builder(
-                itemCount: prices.length,
-                itemBuilder: (_, index) {
-                  final crypto = prices[index];
-                  return ListTile(
-                    title: Text(crypto.id),
-                    subtitle: Text(crypto.symbol),
-                    trailing: Text(crypto.price.toStringAsFixed(2)),
-                  );
-                },
-              ),
-            ));
+          appBar: const MyAppBar(),
+          body: bloc.state.when<Widget>(
+            loading: () => const Loader(),
+            error: (failure) => Error(failure: failure),
+            loaded: (prices, _) => Prices(prices: prices),
+          ),
+        );
       },
     );
   }
