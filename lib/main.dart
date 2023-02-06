@@ -1,4 +1,7 @@
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/number_symbols.dart';
+import 'package:intl/number_symbols_data.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +10,13 @@ import 'package:crypto_app/features/features.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Intl.defaultLocale = 'es_US';
+  Intl.defaultLocale = 'es_EC';
+  initializeDateFormatting('es_EC', null);
+  final esES = numberFormatSymbols['es_ES'] as NumberSymbols;
+  numberFormatSymbols['es_ES'] = esES.copyWith(currencySymbol: '€');
+  final enUS = numberFormatSymbols['en_US'] as NumberSymbols;
+  numberFormatSymbols['en_US'] = enUS.copyWith(currencySymbol: r'$');
+  numberFormatSymbols['es_EC'] = enUS.copyWith(currencySymbol: r'$');
 
   runApp(MultiProvider(
     providers: [

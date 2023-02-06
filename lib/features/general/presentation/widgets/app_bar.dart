@@ -19,6 +19,26 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
           ),
         );
       }),
+      actions: [
+        DropdownButton(
+          value: const Locale('en', 'US'),
+          items: const [
+            DropdownMenuItem(
+              value: Locale('en', 'US'),
+              child: Text('English'),
+            ),
+            DropdownMenuItem(
+              value: Locale('es', 'ES'),
+              child: Text('Español'),
+            ),
+            DropdownMenuItem(
+              value: Locale('es', 'EC'),
+              child: Text('Español Ecuador'),
+            ),
+          ],
+          onChanged: (_) {},
+        ),
+      ],
     );
   }
 
