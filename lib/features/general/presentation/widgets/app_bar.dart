@@ -32,10 +32,6 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
               value: const Locale('es', 'ES'),
               child: Text(Strings.of(context)!.lanEs),
             ),
-            DropdownMenuItem(
-              value: const Locale('es', 'EC'),
-              child: Text(Strings.of(context)!.lanEsEC),
-            ),
           ],
           onChanged: (_) {},
         ),
