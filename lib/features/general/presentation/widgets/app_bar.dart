@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:crypto_app/features/features.dart';
+import 'package:crypto_app/core/core.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -22,18 +23,18 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: [
         DropdownButton(
           value: const Locale('en', 'US'),
-          items: const [
+          items: [
             DropdownMenuItem(
-              value: Locale('en', 'US'),
-              child: Text('English'),
+              value: const Locale('en', 'US'),
+              child: Text(Strings.of(context)!.lanEn),
             ),
             DropdownMenuItem(
-              value: Locale('es', 'ES'),
-              child: Text('Español'),
+              value: const Locale('es', 'ES'),
+              child: Text(Strings.of(context)!.lanEs),
             ),
             DropdownMenuItem(
-              value: Locale('es', 'EC'),
-              child: Text('Español Ecuador'),
+              value: const Locale('es', 'EC'),
+              child: Text(Strings.of(context)!.lanEsEC),
             ),
           ],
           onChanged: (_) {},

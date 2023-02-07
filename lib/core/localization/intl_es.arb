@@ -1,0 +1,16 @@
+{
+  "dashboard": "Inicio",
+  "lanEn": "Inglés",
+  "lanEs": "Español",
+  "lanEsEC": "Español Ecuador",
+  "about": "Acerca de",
+  "cancel": "Cancelar",
+  "pleaseWait": "Por favor espere...",
+  "settings": "Ajustes",
+  "themeLight": "Tema claro",
+  "themeDark": "Tema oscuro",
+  "themeSystem": "Tema del sistema",
+  "chooseTheme": "Escoje un tema",
+  "chooseLanguage": "Escoge un lenguaje",
+  "errorNoData": "No hay información"
+}

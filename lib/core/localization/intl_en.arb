@@ -1,0 +1,16 @@
+{
+  "dashboard": "Dashboard",
+  "lanEn": "English",
+  "lanEs": "Spanish",
+  "lanEsEC": "Spanish Ecuador",
+  "about": "About",
+  "cancel": "Cancel",
+  "pleaseWait": "Please Wait...",
+  "settings": "Settings",
+  "themeLight": "Theme Light",
+  "themeDark": "Theme Dark",
+  "themeSystem": "Theme System",
+  "chooseTheme": "Choose Theme",
+  "chooseLanguage": "Choose Language",
+  "errorNoData": "No data"
+}

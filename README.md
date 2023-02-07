@@ -26,6 +26,14 @@ Generate Freezed files
 flutter pub run build_runner build
 ```
 
+__Step 4__
+
+Generate locale strings (en & es)
+
+```bash
+flutter gen-l10n
+```
+
 Run the app
 
 ## My process
