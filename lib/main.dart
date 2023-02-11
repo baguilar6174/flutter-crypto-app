@@ -46,11 +46,42 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp(
       {super.key, required this.languageCode, required this.countryCode});
   final String languageCode;
   final String countryCode;
+
+  @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  late Locale _locale;
+  Locale get locale => _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _locale = Locale(widget.languageCode, widget.countryCode);
+    _locale = L10n.all.firstWhere(
+      (e) =>
+          e.languageCode == _locale.languageCode &&
+          e.countryCode == _locale.countryCode,
+      orElse: () => L10n.all.first,
+    );
+  }
+
+  void changeLanguaje(Locale locale) {
+    setState(() {
+      if (locale.countryCode?.isNotEmpty ?? false) {
+        Intl.defaultLocale = '${locale.languageCode}_${locale.countryCode}';
+      } else {
+        Intl.defaultLocale = locale.languageCode;
+      }
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +98,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ], // allow widgets support multiples languajes
       supportedLocales: L10n.all,
-      locale: Locale(languageCode, countryCode),
+      locale: _locale,
       home: const HomeView(),
     );
   }
