@@ -99,8 +99,7 @@ class MyAppState extends State<MyApp> {
       ], // allow widgets support multiples languajes
       supportedLocales: L10n.all,
       locale: _locale,
-      // home: const HomeView(),
-      home: const CounterPage(),
+      home: const HomeView(),
     );
   }
 }
