@@ -10,11 +10,11 @@ class CounterPage extends StatefulWidget {
 }
 
 class _CounterPageState extends State<CounterPage> {
-  final _cubit = CounterCubit();
+  final _bloc = CounterBloc(0);
 
   @override
   void dispose() {
-    _cubit.dispose();
+    _bloc.dispose();
     super.dispose();
   }
 
@@ -23,17 +23,17 @@ class _CounterPageState extends State<CounterPage> {
     return Scaffold(
       body: Center(
         child: StreamBuilder<int>(
-          stream: _cubit.stream,
-          initialData: _cubit.state,
+          stream: _bloc.stream,
+          initialData: _bloc.state,
           builder: (_, snapshot) => Text(
-            '${_cubit.state}',
+            '${_bloc.state}',
             style: const TextStyle(fontSize: 25),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _cubit.increment();
+          _bloc.add(IncrementEvent());
         },
       ),
     );
