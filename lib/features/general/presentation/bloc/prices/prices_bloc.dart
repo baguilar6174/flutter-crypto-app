@@ -1,26 +1,28 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
+import 'package:bloc/bloc.dart';
 import 'package:crypto_app/features/features.dart';
 
-class PricesBloc extends ChangeNotifier {
-  PricesBloc({
+class PricesBloc extends Bloc<PricesEvent, PricesState> {
+  PricesBloc(
+    super.initialState, {
     required this.exchangeRepository,
     required this.wsRepository,
-  });
+  }) {
+    on<InitializeEvent>(_onInitialize);
+    on<UpdateWsStatusEvent>((event, emit) {
+      state.mapOrNull(loaded: (state) {
+        emit(state.copyWith(wsStatus: event.status));
+      });
+    });
+    on<UpdateCryptoPricesEvent>((event, emit) {});
+    on<DeleteEvent>((event, emit) {});
+  }
 
   final ExchangeRepository exchangeRepository;
   final WsRepository wsRepository;
-
   StreamSubscription? _subscription;
   StreamSubscription? _wsSubscription;
-
-  // ! Both ways are correct
-  // PricesState _state = const LoadingPricesState();
-  PricesState _state = const PricesState.loading();
-
-  PricesState get state => _state;
 
   final _ids = [
     "bitcoin",
@@ -33,47 +35,36 @@ class PricesBloc extends ChangeNotifier {
     "dogecoin",
   ];
 
-  Future<void> init() async {
-    if (state is! LoadingPricesState) {
-      _state = const LoadingPricesState();
-      notifyListeners();
-    }
+  Future<void> _onInitialize(
+    InitializeEvent event,
+    Emitter<PricesState> emit,
+  ) async {
+    if (state is! LoadingPricesState) emit(const LoadingPricesState());
     final result = await exchangeRepository.getPrices(_ids);
-
-    _state = result.when(
+    final newState = result.when(
       left: (failure) => ErrorPricesState(failure),
       right: (prices) {
         startPricesListening();
         return LoadedPricesState(prices: prices);
       },
     );
-    notifyListeners();
+    emit(newState);
   }
 
   Future<bool> startPricesListening() async {
     final connected = await wsRepository.connect(_ids);
-
     WsStatus wsStatus =
         connected ? const WsStatus.connected() : const WsStatus.error();
-
-    state.mapOrNull(
-      loaded: (state) {
-        if (connected) {
-          _onPricesChanged();
-        }
-        _state = state.copyWith(
-          wsStatus: wsStatus,
-        );
-        notifyListeners();
-      },
-    );
+    add(UpdateWsStatusEvent(wsStatus));
+    await _wsSubscription?.cancel();
+    _wsSubscription = wsRepository.onStatusChanged.listen((status) {
+      add(UpdateWsStatusEvent(status));
+    });
     return connected;
   }
 
-  void _onPricesChanged() {
+  void _onPricesChanged(Emitter<PricesState> emit) {
     _subscription?.cancel();
-    _wsSubscription?.cancel();
-
     _subscription = wsRepository.onPricesChanged.listen((changes) {
       state.mapOrNull(
         loaded: (state) {
@@ -89,25 +80,17 @@ class PricesBloc extends ChangeNotifier {
             return price;
           }).toList();
 
-          _state = state.copyWith(prices: prices);
-          notifyListeners();
+          emit(state.copyWith(prices: prices));
         },
       );
     });
-    _wsSubscription = wsRepository.onStatusChanged.listen((status) {
-      state.mapOrNull(
-        loaded: (state) {
-          _state = state.copyWith(wsStatus: status);
-        },
-      );
-      notifyListeners();
-    });
+    /*  */
   }
 
   @override
-  void dispose() {
+  Future<void> close() {
     _subscription?.cancel();
     _wsSubscription?.cancel();
-    super.dispose();
+    return super.close();
   }
 }

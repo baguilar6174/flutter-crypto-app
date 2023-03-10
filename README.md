@@ -26,6 +26,14 @@ Generate Freezed files
 flutter pub run build_runner build
 ```
 
+If you have problems to generate freezed files:
+
+`I tried removing l10n.yaml and then flutter clean and flutter packages pub get and it fixed!`
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
 __Step 4__
 
 Generate locale strings (en & es)

@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^1.1.6
   # internationalization and locale
   intl: ^0.17.0
+  bloc: ^8.1.1
+  flutter_bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:
